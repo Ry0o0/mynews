@@ -13,7 +13,7 @@
                                     {{ $profile->updated_at->format('Y年m月d日') }}
                                 </div>
                                 <div class="name">
-                                    {{ str_limit($profile->name, 150) }}
+                                    {{ str_limit($profile->name, 100) }}
                                 </div>
                                 <div class="gender mt-3">
                                     {{ str_limit($profile->gender, 10) }}
@@ -22,7 +22,7 @@
                                     {{ str_limit($profile->hobby, 10) }}
                                 </div>
                                 <div class="introduction mt-3">
-                                    {{ str_limit($profile->introduction, 1500) }}
+                                    {{ str_limit($profile->introduction, 500) }}
                                 </div>
                             </div>
                         </div>

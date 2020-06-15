@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 
 use App\News;
 use App\History;
-
 use Carbon\Carbon;
 
 class NewsController extends Controller
@@ -52,7 +51,7 @@ class NewsController extends Controller
 
     public function edit(Request $request)
     {
-        // News Modelからデータを取得する
+        // Newsモデルからデータを取得する
         $news = News::find($request->id);
         if (empty($news)) {
           abort(404);
@@ -63,12 +62,16 @@ class NewsController extends Controller
 
     public function update(Request $request)
     {
-        // Validationをかける
+        //バリテーションを行う。
         $this->validate($request, News::$rules);
-        // News Modelからデータを取得する
+
+        //該当newsモデルを取得する。
         $news = News::find($request->id);
-        // 送信されてきたフォームデータを格納する
+
+        //リクエストを取得する。
         $news_form = $request->all();
+
+        //フォームに画像があれば保存する。
         if (isset($news_form['image'])) {
           $path = $request->file('image')->store('public/image');
           $news->image_path = basename($path);
@@ -78,10 +81,11 @@ class NewsController extends Controller
           unset($news_form['remove']);
         }
         unset($news_form['_token']);
+
         // 該当するデータを上書きして保存する
         $news->fill($news_form)->save();
 
-        // 以下を追記
+        //Historyモデルを取得して、編集履歴を保存する。
         $history = new History;
         $history->news_id = $news->id;
         $history->edited_at = Carbon::now();
@@ -92,7 +96,7 @@ class NewsController extends Controller
 
     public function delete(Request $request)
     {
-        // 該当するNews Modelを取得
+        // 該当するNewsモデルを取得する。
         $news = News::find($request->id);
         // 削除する
         $news->delete();
